@@ -1,3 +1,4 @@
+```
 hook前：
 
 (gdb) x/10i 0x7ffff6dcf4f0
@@ -48,3 +49,4 @@ hook后：
    
 x/gx 0x7ffff654b02f
 0x7ffff654b02f: 0x00007ffff6dcf501
+```
