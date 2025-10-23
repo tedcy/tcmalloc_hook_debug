@@ -6,10 +6,6 @@ extern "C" void freeMemory(void* ptr);
 
 using namespace std;
 
-void my_free(void* ptr) {
-    tc_free(ptr);
-}
-
 extern void simple_hook(void *sym, void* targetFunc);
 void hookGlibc() {
     const char* library_path = "/lib/x86_64-linux-gnu/libc.so.6";
@@ -19,7 +15,6 @@ void hookGlibc() {
         quick_exit(0);
     }
     void* symbol = dlsym(handle, "free");
-    // void* symbol = dlsym(RTLD_DEFAULT,"free"); => 指向tc_free
     // void* symbol = dlsym(RTLD_NEXT, "free"); => 指向glibc free
     if (symbol) {
         cout << "Symbol found in " << library_path << " at address: " << symbol << endl;
@@ -27,7 +22,14 @@ void hookGlibc() {
         cerr << "Failed to find symbol in " << library_path << ": " << dlerror() << endl;
         quick_exit(0);
     }
-    simple_hook(symbol, (void*)my_free);
+    void* hookSymbol = dlsym(RTLD_DEFAULT,"free"); //=>指向tcmalloc free
+    if (hookSymbol) {
+        cout << "Symbol found in RTLD_DEFAULT at address: " << hookSymbol << endl;
+    } else {
+        cerr << "Failed to find symbol in RTLD_DEFAULT: " << dlerror() << endl;
+        quick_exit(0);
+    }
+    simple_hook(symbol, hookSymbol);
 }
 
 int main() {
