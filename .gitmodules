@@ -1,0 +1,6 @@
+[submodule "tcmalloc_fix_mmap_hook/PFishHook"]
+	path = tcmalloc_fix_mmap_hook/PFishHook
+	url = https://github.com/Menooker/PFishHook.git
+[submodule "gperftools"]
+	path = gperftools
+	url = https://github.com/gperftools/gperftools.git

@@ -1,0 +1,5 @@
+*.so
+main
+compile_commands.json*
+*hprof
+.cache
